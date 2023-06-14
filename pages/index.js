@@ -2,6 +2,19 @@ import Head from 'next/head';
 import Image from 'next/image';
 import buildspaceLogo from '../assets/buildspace-logo.png';
 import { useState, useEffect } from 'react';
+import Card from '../components/Card';
+
+const RenderCards = ({ data, input }) => {
+  if (data?.length > 0) {
+    return (
+      data.map((post) => <Card />)
+    );
+  }
+
+  return (
+    <h2 className="mt-5 font-bold text-[#6469ff] text-xl uppercase">{input}</h2>
+  );
+};
 
 const Home = () => {
   const [input, setInput] = useState('');
@@ -11,6 +24,9 @@ const Home = () => {
   const [retryCount, setRetryCount] = useState(maxRetries);
   const [isGenerating, setIsGenerating] = useState(false);
   const [finalPrompt, setFinalPrompt] = useState('');
+  const [searchedResults, setSearchedResults] = useState(null);
+  const [allPosts, setAllPosts] = useState(null);
+
 
   const onChange = (event) => {
     setInput(event.target.value);
@@ -45,6 +61,8 @@ const Home = () => {
     });
 
     const data = await response.json();
+
+    setAllPosts(data);
 
 
     // If model still loading, drop that retry time
@@ -142,17 +160,21 @@ const Home = () => {
         <p>{finalPrompt}</p>
         {console.log(img)}
       </div>
+
     )}
+    I'm a card
+    <RenderCards />
       </div>
+     
       <div className="badge-container grow">
         <a
-          href="https://buildspace.so/builds/ai-avatar"
+          href="https://katanaportfolio.netlify.app/"
           target="_blank"
           rel="noreferrer"
         >
           <div className="badge">
-            <Image src={buildspaceLogo} alt="buildspace logo" />
-            <p>build with buildspace</p>
+            {/* <Image src={buildspaceLogo} alt="buildspace logo" /> */}
+            <p>Built by Haley Engineering</p>
           </div>
         </a>
       </div>
